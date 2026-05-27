@@ -1,8 +1,10 @@
 name: Lab 7
-#TODO The pipeline should be triggered only on push to a "test" branch
+
+# 1. Trigger the pipeline only on push to the "test" branch
 on:
   push:
-  pull_request:
+    branches:
+      - test
 
 jobs:
   test:
@@ -22,8 +24,13 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
-      # TODO: Run backend tests in the pipeline
 
-      # TODO: Run the Jacoco report in the pipeline (Jacoco already exists)
+      # 2 & 4. Run backend tests in the pipeline AND read GitHub secrets
+      - name: Run backend tests
+        run: ./gradlew test
+        env:
+          MY_SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
 
-      # TODO: Set GitHub secrets and read them in the pipeline (for the environmentTest)
+      # 3. Run the Jacoco report in the pipeline
+      - name: Generate Jacoco Report
+        run: ./gradlew jacocoTestReport
