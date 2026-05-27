@@ -1,6 +1,5 @@
 name: Lab 7
 
-# 1. Trigger the pipeline only on push to the "test" branch
 on:
   push:
     branches:
@@ -23,14 +22,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew assemble
 
-      # 2 & 4. Run backend tests in the pipeline AND read GitHub secrets
       - name: Run backend tests
         run: ./gradlew test
         env:
           MY_SECRET_KEY: ${{ secrets.MY_SECRET_KEY }}
 
-      # 3. Run the Jacoco report in the pipeline
       - name: Generate Jacoco Report
         run: ./gradlew jacocoTestReport
